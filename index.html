@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="tab-title">Mon Guide Sport-Santé - Alimentation & Posture</title>
+    <!-- Tailwind CSS pour une mise en page moderne -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Polices modernes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <!-- FontAwesome pour des icônes dynamiques -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1A3A3A;
+            --primary-dark: #122828;
+            --accent-color: #11CAA0;
+            --accent-light: rgba(17, 202, 160, 0.15);
+            --accent-hover: #0fb891;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f3f7f6;
+            transition: background-color 0.3s ease;
+        }
+        h1, h2, h3, .font-title {
+            font-family: 'Fredoka', sans-serif;
+        }
+        
+        .bg-custom-primary { background-color: var(--primary-color); }
+        .bg-custom-primary-dark { background-color: var(--primary-dark); }
+        .text-custom-primary { color: var(--primary-color); }
+        .bg-custom-accent { background-color: var(--accent-color); }
+        .text-custom-accent { color: var(--accent-color); }
+        .border-custom-accent { border-color: var(--accent-color); }
+        .bg-custom-accent-light { background-color: var(--accent-light); }
+        
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased pb-12">
+
+    <!-- Top Decorative Banner (Editable Partner / Calvados) -->
+    <div id="top-banner-container" class="bg-custom-primary text-white text-xs py-2 px-4 text-center font-semibold tracking-wider flex items-center justify-center gap-2">
+        <span id="badge-banner" class="bg-custom-accent text-custom-primary text-[10px] uppercase font-bold px-2 py-0.5 rounded-full">Projet Lauréat</span>
+        <span id="text-banner">Une action de sensibilisation soutenue par le Département du Calvados</span>
+    </div>
+
+    <!-- Floating Customizer Trigger Button (HIDDEN BY DEFAULT - ONLY VISIBLE WITH ?admin=1) -->
+    <button id="customize-trigger-btn" onclick="toggleEditor(true)" class="fixed bottom-4 right-4 z-40 bg-custom-primary text-white hover:scale-105 active:scale-95 transition-all p-4 rounded-full shadow-2xl border-2 border-custom-accent flex items-center gap-2 text-xs font-bold hidden">
+        <i class="fa-solid fa-palette text-sm text-custom-accent"></i>
+        <span>Personnaliser</span>
+    </button>
+
+    <!-- Main Container -->
+    <div class="max-w-md md:max-w-2xl mx-auto mt-4 px-4">
+        
+        <!-- Header / Hero Card -->
+        <div id="hero-card" class="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden mb-6">
+            <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl text-white">
+                <i class="fa-solid fa-weight-hanging"></i>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 relative z-10">
+                <div class="flex items-center gap-4">
+                    <!-- Dynamic College/Association Logo -->
+                    <div id="logo-wrapper" class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-custom-accent text-3xl overflow-hidden p-1 border border-white/20">
+                        <i id="default-logo" class="fa-solid fa-heart-pulse animate-pulse"></i>
+                        <img id="custom-logo" class="hidden w-full h-full object-contain rounded-xl" src="" alt="Logo">
+                    </div>
+                    <div>
+                        <span id="header-mini-title" class="text-xs font-bold uppercase text-custom-accent tracking-widest">Mon Guide Sport-Santé</span>
+                        <h1 id="header-main-title" class="text-2xl md:text-3xl font-extrabold leading-tight">Alimentation & Posture</h1>
+                    </div>
+                </div>
+
+                <!-- Dynamic Partner Logo (Right Side) -->
+                <div id="partner-logo-wrapper" class="hidden sm:flex w-24 h-12 bg-white/10 rounded-xl items-center justify-center p-1 border border-white/10">
+                    <img id="custom-partner-logo" class="max-w-full max-h-full object-contain rounded-lg" src="" alt="Partenaire">
+                </div>
+            </div>
+            
+            <p id="header-intro" class="text-emerald-100/80 text-sm leading-relaxed mb-4 relative z-10">
+                Salut ! Découvre comment bouger sans te faire mal, manger comme un véritable athlète et faire le plein de super-pouvoirs au collège ! 🚀
+            </p>
+
+            <!-- Mini stats bar -->
+            <div class="grid grid-cols-3 gap-2 bg-black/40 rounded-2xl p-3 text-center text-xs border border-white/5 relative z-10">
+                <div>
+                    <span class="block text-emerald-400 font-bold text-sm">0%</span>
+                    <span class="text-gray-400">Interdit</span>
+                </div>
+                <div class="border-x border-white/10">
+                    <span class="block text-custom-accent font-bold text-sm">100%</span>
+                    <span class="text-gray-400">Énergie</span>
+                </div>
+                <div>
+                    <span class="block text-amber-400 font-bold text-sm">9 h+</span>
+                    <span class="text-gray-400">Sommeil</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Sommaire (Navigation Tabs) -->
+        <div class="bg-white rounded-2xl p-2 shadow-md mb-6 flex gap-1 border border-gray-100">
+            <button onclick="openSection('posture')" id="btn-posture" class="flex-1 py-3 px-1 rounded-xl text-xs font-bold text-center transition duration-300 flex flex-col items-center gap-1 bg-custom-primary text-white">
+                <i class="fa-solid fa-child-reaching text-lg"></i>
+                <span>1. Posture</span>
+            </button>
+            <button onclick="openSection('nutrition')" id="btn-nutrition" class="flex-1 py-3 px-1 rounded-xl text-xs font-bold text-center transition duration-300 flex flex-col items-center gap-1 text-gray-500 hover:bg-gray-50">
+                <i class="fa-solid fa-apple-whole text-lg"></i>
+                <span>2. Nutrition</span>
+            </button>
+            <button onclick="openSection('evaluation')" id="btn-evaluation" class="flex-1 py-3 px-1 rounded-xl text-xs font-bold text-center transition duration-300 flex flex-col items-center gap-1 text-gray-500 hover:bg-gray-50">
+                <i class="fa-solid fa-square-check text-lg"></i>
+                <span>3. Mon Défi</span>
+            </button>
+        </div>
+
+        <!-- ==================== SECTION 1 : POSTURE ==================== -->
+        <div id="sec-posture" class="tab-content active space-y-6">
+            
+            <!-- Intro Concept Card -->
+            <div class="bg-white rounded-3xl p-6 shadow-md border border-gray-50">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="bg-emerald-100 text-custom-primary px-3 py-1 rounded-full text-xs font-bold">La Nuance Biomécanique</span>
+                    <h2 class="text-xl font-bold text-custom-primary">Le dos rond : ami ou ennemi ? 🛡️</h2>
+                </div>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Contrairement aux idées reçues, <strong>le dos rond n’est pas dangereux en soi</strong> ! C'est un mouvement complètement naturel nécessaire pour s'étirer ou se baisser. 
+                </p>
+                <div class="my-3 border-l-4 border-custom-accent bg-custom-accent-light p-3 rounded-r-xl">
+                    <p class="text-xs text-gray-700 italic">
+                        Le vrai risque apparaît lors de la <strong>répétition fréquente de gestes à fortes contraintes</strong> ou lorsque l'on soulève une <strong>charge lourde</strong> sans engager les jambes et en restant trop loin de l'objet.
+                    </p>
+                </div>
+
+                <!-- INTERACTIVE SKELETON POSTURE COMPARATOR -->
+                <div class="mt-6 bg-[#f7faf9] rounded-2xl p-4 border border-emerald-100">
+                    <p class="text-xs font-bold text-center text-gray-500 mb-3 uppercase tracking-wider">Simulateur de levier : Compare la distance d'effort !</p>
+                    
+                    <div class="flex flex-col sm:flex-row justify-center gap-2 mb-4">
+                        <button onclick="setPostureVisual(false)" id="btn-posture-bad" class="px-3 py-2 rounded-xl text-xs font-bold transition-all bg-red-100 text-red-700 border-2 border-red-300">
+                            🚨 Charge Éloignée (Bras de Levier Long)
+                        </button>
+                        <button onclick="setPostureVisual(true)" id="btn-posture-good" class="px-3 py-2 rounded-xl text-xs font-bold transition-all bg-gray-200 text-gray-600 border-2 border-transparent">
+                            🟢 Charge Rapprochée (Bras de Levier Court)
+                        </button>
+                    </div>
+
+                    <!-- SVG Illustration Container (FLUID & NO OVERLAP ON MOBILE) -->
+                    <div class="bg-white rounded-xl p-4 flex flex-col justify-between items-center shadow-inner border border-gray-100 min-h-[250px] relative">
+                        <div class="w-full flex-1 flex justify-center items-center">
+                            <svg id="posture-svg" class="w-full max-w-[280px] h-32 transition-all duration-500" viewBox="0 0 200 130">
+                                <!-- Ground -->
+                                <line x1="20" y1="120" x2="180" y2="120" stroke="#cbd5e1" stroke-width="4" stroke-linecap="round"/>
+                                <!-- Heavy Box (Sac) -->
+                                <rect x="135" y="80" width="35" height="35" rx="4" fill="#a7f3d0" stroke="#059669" stroke-width="2"/>
+                                <text x="152.5" y="102" fill="#047857" font-size="10" font-weight="bold" text-anchor="middle">Sac 10kg</text>
+                                
+                                <!-- Stickman representation -->
+                                <!-- Feet/Legs -->
+                                <path id="legs-path" d="M 60 120 L 75 100 L 80 75" stroke="var(--primary-color)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" class="transition-all duration-500"/>
+                                <!-- Spine -->
+                                <path id="spine-path" d="M 80 75 Q 115 70 145 95" stroke="#ef4444" stroke-width="6" stroke-linecap="round" fill="none" class="transition-all duration-500"/>
+                                <!-- Head -->
+                                <circle id="head-circle" cx="145" cy="83" r="8" fill="var(--primary-color)" class="transition-all duration-500"/>
+                                <!-- Arms -->
+                                <path id="arms-path" d="M 115 70 L 140 90" stroke="var(--primary-color)" stroke-width="4" stroke-linecap="round" fill="none" class="transition-all duration-500"/>
+                            </svg>
+                        </div>
+
+                        <!-- Educational Banner on illustration (NO ABSOLUTE POSITIONING TO AVOID CLIPPING) -->
+                        <div id="posture-comment" class="w-full text-center text-xs font-bold py-2 px-3 rounded-xl bg-red-50 text-red-700 transition-colors duration-300 mt-2">
+                            Gros bras de levier ! La distance augmente le moment de force subi par les vertèbres.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Physics explanation card -->
+            <div class="bg-slate-50 rounded-3xl p-6 border border-slate-200">
+                <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-calculator text-custom-accent"></i>
+                    La minute physique-chimie : La Loi des Moments de Force 📐
+                </h3>
+                <p class="text-xs text-gray-600 leading-relaxed">
+                    Pourquoi est-ce plus facile de porter un objet lourd près du corps ? C'est une question de <strong>moment de force (le couple)</strong> qui s'exprime par la formule :
+                </p>
+                <div class="my-3 text-center bg-white py-3 rounded-xl border border-slate-100 font-mono text-xs text-slate-800">
+                    M = F &times; d
+                </div>
+                <ul class="text-xs text-gray-600 space-y-1.5 list-disc list-inside">
+                    <li><strong>M</strong> est le moment de force (le couple de torsion qui s'exerce sur tes lombaires).</li>
+                    <li><strong>F</strong> est le poids de l'objet (sa masse &times; la gravité).</li>
+                    <li><strong>d</strong> est la <strong>distance horizontale (bras de levier)</strong> entre l'objet et tes hanches.</li>
+                </ul>
+                <p class="text-xs text-gray-700 font-semibold mt-3 italic bg-custom-accent-light text-custom-primary p-2.5 rounded-lg">
+                    💡 Conclusion : Si tu divises la distance (d) par 2 en te collant à l'objet, tu divises aussi par 2 la contrainte subie par ton dos ! C'est le secret des haltérophiles.
+                </p>
+            </div>
+
+            <!-- The Perfect Squat Card -->
+            <div class="bg-white rounded-3xl p-6 shadow-md border border-gray-50">
+                <h3 class="text-lg font-bold text-custom-primary mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-arrows-to-dot text-custom-accent"></i>
+                    Économiser son dos en 3 étapes (Le Squat) :
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100/50 relative">
+                        <span class="absolute top-2 right-2 text-3xl font-extrabold text-custom-accent/20">01</span>
+                        <h4 class="font-bold text-sm text-custom-primary mb-1">Pieds d'ancrage</h4>
+                        <p class="text-xs text-gray-600 font-medium">Laergeur d'épaules, ouverts à 10h10 pour libérer les hanches.</p>
+                    </div>
+                    <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100/50 relative">
+                        <span class="absolute top-2 right-2 text-3xl font-extrabold text-custom-accent/20">02</span>
+                        <h4 class="font-bold text-sm text-custom-primary mb-1">Moteur fessier</h4>
+                        <p class="text-xs text-gray-600 font-medium">Fesses vers l'arrière comme pour t'asseoir. Les cuisses poussent !</p>
+                    </div>
+                    <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100/50 relative">
+                        <span class="absolute top-2 right-2 text-3xl font-extrabold text-custom-accent/20">03</span>
+                        <h4 class="font-bold text-sm text-custom-primary mb-1">Buste fier</h4>
+                        <p class="text-xs text-gray-600 font-medium">Regard devant, poitrine ouverte et charge collée au corps.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backpack challenge -->
+            <div class="bg-gradient-to-r from-teal-600 to-emerald-600 rounded-3xl p-6 text-white shadow-lg">
+                <div class="flex gap-4 items-start">
+                    <div class="bg-white/20 p-3 rounded-2xl text-2xl">
+                        <i class="fa-solid fa-backpack"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold">Le Défi du Sac à Dos 🎒</h3>
+                        <p class="text-xs text-emerald-50/90 mt-1 mb-3">Ton sac pèse parfois très lourd. Voici comment aider ton corps à mieux répartir le poids :</p>
+                        <ul class="text-xs space-y-1.5 list-disc list-inside">
+                            <li>Porte toujours les <strong>deux bretelles</strong> pour équilibrer la charge.</li>
+                            <li>Ajuste les sangles pour que le sac reste près de tes omoplates.</li>
+                            <li>Mets les objets les plus denses (gros livres) tout contre ton dos pour réduire la distance d'effet !</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==================== SECTION 2 : NUTRITION ==================== -->
+        <div id="sec-nutrition" class="tab-content space-y-6">
+            
+            <!-- Nutriment Summary Grid -->
+            <div class="grid grid-cols-3 gap-3">
+                <div class="bg-amber-50 p-3 rounded-2xl border border-amber-200 text-center">
+                    <span class="text-2xl">🍞</span>
+                    <h4 class="text-xs font-bold text-amber-900 mt-1">Glucides</h4>
+                    <p class="text-[10px] text-amber-700/80">L'énergie progressive</p>
+                </div>
+                <div class="bg-red-50 p-3 rounded-2xl border border-red-200 text-center">
+                    <span class="text-2xl">🥚</span>
+                    <h4 class="text-xs font-bold text-red-900 mt-1">Protéines</h4>
+                    <p class="text-[10px] text-red-700/80">Les bâtisseurs musculaires</p>
+                </div>
+                <div class="bg-blue-50 p-3 rounded-2xl border border-blue-200 text-center">
+                    <span class="text-2xl">🥑</span>
+                    <h4 class="text-xs font-bold text-blue-900 mt-1">Lipides</h4>
+                    <p class="text-[10px] text-blue-700/80">Les protecteurs cellulaires</p>
+                </div>
+            </div>
+
+            <!-- INTERACTIVE GOÛTER BUILDER GAME -->
+            <div class="bg-white rounded-3xl p-6 shadow-md border border-gray-100">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-bold">Jeu Interactif</span>
+                    <h2 class="text-xl font-bold text-custom-primary">Compose ton Goûter Sportif ! 🍎</h2>
+                </div>
+                <p class="text-gray-600 text-xs mb-4">
+                    Associe les aliments pour ton goûter d'avant ou après entraînement. Le but ? Trouver le meilleur compromis énergétique !
+                </p>
+
+                <!-- Selector Grid -->
+                <div class="space-y-4">
+                    <!-- Category 1 -->
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 mb-2 uppercase">1. Produit Céréalier (Énergie)</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="selectFood('cereal', 'pain', 30)" id="food-pain" class="p-2 border rounded-xl text-left text-xs font-semibold flex items-center gap-2 hover:bg-emerald-50 transition">
+                                <span>🥖</span> Pain Complet (+30 XP)
+                            </button>
+                            <button onclick="selectFood('cereal', 'donut', 10)" id="food-donut" class="p-2 border rounded-xl text-left text-xs font-semibold flex items-center gap-2 hover:bg-red-50 transition">
+                                <span>🍩</span> Beignet industriel (+10 XP)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Category 2 -->
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 mb-2 uppercase">2. Fruit (Vitamines & Hydratation)</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="selectFood('fruit', 'banane', 30)" id="food-banane" class="p-2 border rounded-xl text-left text-xs font-semibold flex items-center gap-2 hover:bg-emerald-50 transition">
+                                <span>🍌</span> Banane (+30 XP)
+                            </button>
+                            <button onclick="selectFood('fruit', 'bonbon', 5)" id="food-bonbon" class="p-2 border rounded-xl text-left text-xs font-semibold flex items-center gap-2 hover:bg-red-50 transition">
+                                <span>🍬</span> Poignée de bonbons (+5 XP)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Category 3 -->
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 mb-2 uppercase">3. Produit Laitier (Calcium & Protéines)</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="selectFood('lait', 'yaourt', 20)" id="food-yaourt" class="p-2 border rounded-xl text-left text-xs font-semibold flex items-center gap-2 hover:bg-emerald-50 transition">
+                                <span>🥛</span> Yaourt Nature (+20 XP)
+                            </button>
+                            <button onclick="selectFood('lait', 'creme', 10)" id="food-creme" class="p-2 border rounded-xl text-left text-xs font-semibold flex items-center gap-2 hover:bg-red-50 transition">
+                                <span>🧁</span> Crème Dessert (+10 XP)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Category 4 -->
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 mb-2 uppercase">4. Hydratation</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="selectFood('boisson', 'eau', 20)" id="food-eau" class="p-2 border rounded-xl text-left text-xs font-semibold flex items-center gap-2 hover:bg-emerald-50 transition">
+                                <span>💧</span> Eau pure (+20 XP)
+                            </button>
+                            <button onclick="selectFood('boisson', 'monster', -10)" id="food-monster" class="p-2 border rounded-xl text-left text-xs font-semibold flex items-center gap-2 hover:bg-red-50 transition">
+                                <span>🥤</span> Boisson Caféinée (-10 XP)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Score Dashboard -->
+                <div class="mt-6 bg-custom-primary rounded-2xl p-4 text-white">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs uppercase font-bold text-custom-accent">Qualité nutritionnelle :</span>
+                        <span id="gouter-score-text" class="text-lg font-bold">0 / 100 XP</span>
+                    </div>
+                    <!-- Jauge -->
+                    <div class="w-full bg-black/30 h-3 rounded-full overflow-hidden mb-3">
+                        <div id="gouter-score-bar" class="bg-custom-accent h-full w-0 transition-all duration-500"></div>
+                    </div>
+                    <p id="gouter-feedback" class="text-xs text-gray-300 italic text-center">
+                        Choisis un aliment dans chaque catégorie pour évaluer ton apport !
+                    </p>
+                </div>
+            </div>
+
+            <!-- Water intake card -->
+            <div class="bg-sky-50 border border-sky-100 rounded-3xl p-6">
+                <div class="flex gap-4 items-center">
+                    <span class="text-4xl text-sky-500 animate-bounce">💧</span>
+                    <div>
+                        <h3 class="font-bold text-sky-900 text-base">De l'eau, pas du sucre !</h3>
+                        <p class="text-xs text-sky-700/90 leading-relaxed mt-1">
+                            Pendant tes entraînements au collège ou en club, préserve ton hydratation. Une simple baisse d'hydratation de 1% peut réduire tes capacités de force de près de 10% !
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==================== SECTION 3 : AUTO-ÉVALUATION ==================== -->
+        <div id="sec-evaluation" class="tab-content space-y-6">
+            
+            <div class="bg-white rounded-3xl p-6 shadow-md border border-gray-100">
+                <h2 class="text-xl font-bold text-custom-primary mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-amber-500"></i>
+                    Mesure tes habitudes quotidiennes !
+                </h2>
+                <p class="text-gray-600 text-xs mb-5">
+                    Fais le point sur tes comportements santé. Personne ne te juge, c'est pour ton évolution personnelle !
+                </p>
+
+                <!-- Challenges Checklist -->
+                <div class="space-y-3">
+                    <label onclick="updateChallengeScore()" class="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 cursor-pointer border border-gray-100 transition">
+                        <input type="checkbox" id="chk-1" class="w-5 h-5 mt-0.5 accent-custom-accent rounded">
+                        <div>
+                            <p class="font-bold text-sm text-custom-primary">Sac équilibré et collé</p>
+                            <p class="text-xs text-gray-500">Je porte mon sac sur mes deux épaules et les sangles bien serrées.</p>
+                        </div>
+                    </label>
+
+                    <label onclick="updateChallengeScore()" class="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 cursor-pointer border border-gray-100 transition">
+                        <input type="checkbox" id="chk-2" class="w-5 h-5 mt-0.5 accent-custom-accent rounded">
+                        <div>
+                            <p class="font-bold text-sm text-custom-primary">Dos soulagé</p>
+                            <p class="text-xs text-gray-500">Pour porter de gros objets répétitifs, je plie mes jambes et je me colle à la charge.</p>
+                        </div>
+                    </label>
+
+                    <label onclick="updateChallengeScore()" class="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 cursor-pointer border border-gray-100 transition">
+                        <input type="checkbox" id="chk-3" class="w-5 h-5 mt-0.5 accent-custom-accent rounded">
+                        <div>
+                            <p class="font-bold text-sm text-custom-primary">Hydratation régulière</p>
+                            <p class="text-xs text-gray-500">Je bois de l'eau par petites gorgées tout au long de la journée.</p>
+                        </div>
+                    </label>
+
+                    <label onclick="updateChallengeScore()" class="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 cursor-pointer border border-gray-100 transition">
+                        <input type="checkbox" id="chk-4" class="w-5 h-5 mt-0.5 accent-custom-accent rounded">
+                        <div>
+                            <p class="font-bold text-sm text-custom-primary">Glaner des fruits</p>
+                            <p class="text-xs text-gray-500">Je favorise un fruit entier plutôt que des friandises hautement sucrées.</p>
+                        </div>
+                    </label>
+
+                    <label onclick="updateChallengeScore()" class="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 cursor-pointer border border-gray-100 transition">
+                        <input type="checkbox" id="chk-5" class="w-5 h-5 mt-0.5 accent-custom-accent rounded">
+                        <div>
+                            <p class="font-bold text-sm text-custom-primary">Sommeil réparateur</p>
+                            <p class="text-xs text-gray-500">Je dors plus de 9 heures par nuit pour consolider mes apprentissages et reposer mon système.</p>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Final score results -->
+                <div class="mt-6 bg-emerald-50 rounded-2xl p-5 border border-emerald-100 text-center">
+                    <p class="text-xs font-bold text-custom-primary uppercase tracking-wide">Ton Profil Actuel :</p>
+                    <h3 id="chk-score-level" class="text-2xl font-black text-emerald-800 mt-1 mb-2">Débutant 🌱</h3>
+                    
+                    <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden max-w-xs mx-auto mb-3">
+                        <div id="chk-score-bar" class="bg-custom-accent h-full w-0 transition-all duration-500"></div>
+                    </div>
+                    
+                    <p id="chk-score-desc" class="text-xs text-emerald-700">
+                        Coche tes premières habitudes ci-dessus pour débloquer ton profil !
+                    </p>
+                </div>
+            </div>
+
+            <!-- Sleeping tip -->
+            <div class="bg-indigo-50 border border-indigo-100 rounded-3xl p-6">
+                <div class="flex gap-4 items-center">
+                    <span class="text-4xl text-indigo-500 animate-pulse">😴</span>
+                    <div>
+                        <h3 class="font-bold text-indigo-950 text-base">La clé biologique</h3>
+                        <p class="text-xs text-indigo-800/90 leading-relaxed mt-1">
+                            Le sommeil est fondamental : c'est durant les phases profondes que l'hormone de croissance répare les micro-lésions des muscles fatigués par l'activité physique.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ==================== MODAL : CUSTOMIZATION EDITOR ==================== -->
+    <div id="editor-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex justify-center items-center p-4 hidden">
+        <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden border border-gray-100 animate-fadeIn flex flex-col max-h-[90vh]">
+            <!-- Modal Header -->
+            <div class="bg-custom-primary text-white p-5 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-custom-accent"></i>
+                    <h3 class="font-bold text-lg">Personnaliser votre Guide</h3>
+                </div>
+                <button onclick="toggleEditor(false)" class="text-white/80 hover:text-white text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content (Scrollable) -->
+            <div class="p-6 space-y-4 overflow-y-auto flex-1 text-sm text-gray-700">
+                <p class="text-xs text-gray-500 mb-2">Configurez ici le logo, le titre de l'action et la couleur d'accentuation. Tout est sauvegardé automatiquement sur votre appareil !</p>
+
+                <!-- Color Theme -->
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Thème couleur de l'action :</label>
+                    <select id="editor-theme" onchange="changeColorTheme(this.value)" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 outline-none focus:border-custom-accent transition">
+                        <option value="emerald">💚 Vert Département (Original)</option>
+                        <option value="blue">💙 Bleu Océan (Collège Mer)</option>
+                        <option value="orange">🧡 Orange Tonique (Club de Force)</option>
+                        <option value="purple">💜 Violet Athlétique (Énergie)</option>
+                        <option value="red">❤️ Rouge Énergie (Haltérophilie)</option>
+                    </select>
+                </div>
+
+                <!-- Title & Mini Title -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Titre principal :</label>
+                        <input type="text" id="editor-title" placeholder="Alimentation & Posture" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 outline-none focus:border-custom-accent transition">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Sous-titre / Entête :</label>
+                        <input type="text" id="editor-mini-title" placeholder="Mon Guide Sport-Santé" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 outline-none focus:border-custom-accent transition">
+                    </div>
+                </div>
+
+                <!-- Top Banner Text -->
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Texte de la bannière supérieure :</label>
+                    <input type="text" id="editor-banner" placeholder="Soutenu par le Département du Calvados" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 outline-none focus:border-custom-accent transition">
+                </div>
+
+                <!-- Intro Description -->
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Message d'introduction aux élèves :</label>
+                    <textarea id="editor-intro-text" rows="2" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-2.5 outline-none focus:border-custom-accent transition" placeholder="Introduction..."></textarea>
+                </div>
+
+                <!-- Logo Upload (Base64) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t pt-4 border-gray-100">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Logo Principal (ex: Collège) :</label>
+                        <div class="flex items-center gap-2">
+                            <input type="file" id="editor-logo-upload" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'main')">
+                            <button onclick="document.getElementById('editor-logo-upload').click()" class="bg-gray-100 hover:bg-gray-200 border text-gray-700 text-xs font-semibold px-3 py-2 rounded-xl transition">
+                                <i class="fa-solid fa-upload"></i> Choisir une image
+                            </button>
+                            <button onclick="resetLogo('main')" class="text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Logo Partenaire (ex: Club) :</label>
+                        <div class="flex items-center gap-2">
+                            <input type="file" id="editor-partner-logo-upload" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'partner')">
+                            <button onclick="document.getElementById('editor-partner-logo-upload').click()" class="bg-gray-100 hover:bg-gray-200 border text-gray-700 text-xs font-semibold px-3 py-2 rounded-xl transition">
+                                <i class="fa-solid fa-upload"></i> Choisir une image
+                            </button>
+                            <button onclick="resetLogo('partner')" class="text-red-500 hover:text-red-700 text-xs"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-gray-50 p-4 border-t border-gray-100 flex justify-between gap-2">
+                <button onclick="resetToDefaults()" class="text-xs text-gray-500 hover:text-red-600 font-semibold px-3 py-2 transition">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Réinitialiser tout
+                </button>
+                <div class="flex gap-2">
+                    <button onclick="saveAndApplySettings()" class="bg-custom-primary text-white hover:opacity-95 text-xs font-bold px-4 py-2.5 rounded-xl transition">
+                        Enregistrer & Appliquer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Floating Toast Notification -->
+    <div id="toast-notify" class="fixed top-5 right-5 bg-custom-primary text-white border-2 border-custom-accent px-5 py-3 rounded-2xl shadow-2xl transform translate-y-[-100px] opacity-0 transition duration-300 flex items-center gap-2 font-semibold z-50 text-xs">
+        <i class="fa-solid fa-circle-check text-custom-accent text-sm"></i> <span id="toast-text">Modifications enregistrées !</span>
+    </div>
+
+    <!-- Script of the application -->
+    <script>
+        // System Theme Color Maps
+        const colorThemes = {
+            emerald: {
+                primary: "#1A3A3A",
+                primaryDark: "#122828",
+                accent: "#11CAA0",
+                accentLight: "rgba(17, 202, 160, 0.15)",
+                accentHover: "#0fb891"
+            },
+            blue: {
+                primary: "#1A2E40",
+                primaryDark: "#12202E",
+                accent: "#3B82F6",
+                accentLight: "rgba(59, 130, 246, 0.15)",
+                accentHover: "#2563EB"
+            },
+            orange: {
+                primary: "#3D2314",
+                primaryDark: "#2B180E",
+                accent: "#F97316",
+                accentLight: "rgba(249, 115, 22, 0.15)",
+                accentHover: "#EA580C"
+            },
+            purple: {
+                primary: "#2E1A47",
+                primaryDark: "#201233",
+                accent: "#A855F7",
+                accentLight: "rgba(168, 85, 247, 0.15)",
+                accentHover: "#9333EA"
+            },
+            red: {
+                primary: "#3F1616",
+                primaryDark: "#2B0F0F",
+                accent: "#EF4444",
+                accentLight: "rgba(239, 68, 68, 0.15)",
+                accentHover: "#DC2626"
+            }
+        };
+
+        // Live Config State
+        let currentSettings = {
+            theme: "emerald",
+            title: "Alimentation & Posture",
+            miniTitle: "Mon Guide Sport-Santé",
+            banner: "Une action de sensibilisation soutenue par le Département du Calvados",
+            intro: "Salut ! Découvre comment bouger sans te faire mal, manger comme un véritable athlète et faire le plein de super-pouvoirs au collège ! 🚀",
+            mainLogo: "", // Base64
+            partnerLogo: "" // Base64
+        };
+
+        // Navigation tab controller
+        function openSection(sectionId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            document.getElementById('sec-' + sectionId).classList.add('active');
+
+            const buttons = ['posture', 'nutrition', 'evaluation'];
+            buttons.forEach(btn => {
+                const element = document.getElementById('btn-' + btn);
+                if (btn === sectionId) {
+                    element.className = "flex-1 py-3 px-1 rounded-xl text-xs font-bold text-center transition duration-300 flex flex-col items-center gap-1 bg-custom-primary text-white";
+                } else {
+                    element.className = "flex-1 py-3 px-1 rounded-xl text-xs font-bold text-center transition duration-300 flex flex-col items-center gap-1 text-gray-500 hover:bg-gray-50";
+                }
+            });
+        }
+
+        // Physic lever-arm and leg adjustments
+        function setPostureVisual(isGood) {
+            const btnBad = document.getElementById('btn-posture-bad');
+            const btnGood = document.getElementById('btn-posture-good');
+            const spine = document.getElementById('spine-path');
+            const head = document.getElementById('head-circle');
+            const arms = document.getElementById('arms-path');
+            const legs = document.getElementById('legs-path');
+            const comment = document.getElementById('posture-comment');
+
+            if (isGood) {
+                // Style buttons
+                btnGood.className = "px-3 py-2 rounded-xl text-xs font-bold transition-all bg-emerald-100 text-emerald-700 border-2 border-emerald-300";
+                btnBad.className = "px-3 py-2 rounded-xl text-xs font-bold transition-all bg-gray-200 text-gray-600 border-2 border-transparent";
+                
+                // Animate SVG skeleton (Good posture: feet/legs shifted closer, straight spine, shifted up -10px)
+                legs.setAttribute('d', 'M 60 120 L 75 100 L 80 75');
+                spine.setAttribute('d', 'M 80 75 L 115 40 L 145 15');
+                spine.setAttribute('stroke', 'var(--accent-color)');
+                head.setAttribute('cx', '145');
+                head.setAttribute('cy', '7');
+                arms.setAttribute('d', 'M 115 40 L 140 90');
+                
+                // Comment
+                comment.innerHTML = "<strong>Moment de force minimisé !</strong> Appuis proches de la charge = bras de levier réduit (d &darr;). Ton dos est ultra-protégé ! 🤩";
+                comment.className = "w-full text-center text-xs font-bold py-2 px-3 rounded-xl bg-emerald-50 text-emerald-700 transition-colors duration-300 mt-2";
+            } else {
+                // Style buttons
+                btnBad.className = "px-3 py-2 rounded-xl text-xs font-bold transition-all bg-red-100 text-red-700 border-2 border-red-300";
+                btnGood.className = "px-3 py-2 rounded-xl text-xs font-bold transition-all bg-gray-200 text-gray-600 border-2 border-transparent";
+                
+                // Animate SVG skeleton (Bad posture: curved spine, shifted up -10px)
+                legs.setAttribute('d', 'M 60 120 L 75 100 L 80 75');
+                spine.setAttribute('d', 'M 80 75 Q 115 70 145 95');
+                spine.setAttribute('stroke', '#ef4444'); // Red
+                head.setAttribute('cx', '145');
+                head.setAttribute('cy', '83');
+                arms.setAttribute('d', 'M 115 70 L 140 90');
+
+                // Comment
+                comment.innerHTML = "<strong>Gros bras de levier !</strong> La distance horizontale (d &uarr;) entre l'objet et tes hanches multiplie le couple subi par tes lombaires. ☹️";
+                comment.className = "w-full text-center text-xs font-bold py-2 px-3 rounded-xl bg-red-50 text-red-700 transition-colors duration-300 mt-2";
+            }
+        }
+
+        // Goûter Builder Interactive Game Controller
+        const selectedGouter = {
+            cereal: null,
+            fruit: null,
+            lait: null,
+            boisson: null
+        };
+
+        function selectFood(category, foodId, scoreValue) {
+            const options = {
+                cereal: ['pain', 'donut'],
+                fruit: ['banane', 'bonbon'],
+                lait: ['yaourt', 'creme'],
+                boisson: ['eau', 'monster']
+            };
+
+            options[category].forEach(item => {
+                const element = document.getElementById('food-' + item);
+                element.className = "p-2 border rounded-xl text-left text-xs font-semibold flex items-center gap-2 hover:bg-emerald-50 transition";
+            });
+
+            selectedGouter[category] = { id: foodId, score: scoreValue };
+            const selectedElement = document.getElementById('food-' + foodId);
+            
+            if (scoreValue > 15) {
+                selectedElement.className = "p-2 border-2 border-emerald-500 bg-emerald-50/50 rounded-xl text-left text-xs font-semibold flex items-center gap-2 transition";
+            } else {
+                selectedElement.className = "p-2 border-2 border-red-500 bg-red-50/50 rounded-xl text-left text-xs font-semibold flex items-center gap-2 transition";
+            }
+
+            calculateGouterScore();
+        }
+
+        function calculateGouterScore() {
+            let totalScore = 0;
+            let count = 0;
+
+            for (const key in selectedGouter) {
+                if (selectedGouter[key]) {
+                    totalScore += selectedGouter[key].score;
+                    count++;
+                }
+            }
+
+            if (totalScore < 0) totalScore = 0;
+            
+            const bar = document.getElementById('gouter-score-bar');
+            const scoreText = document.getElementById('gouter-score-text');
+            const feedback = document.getElementById('gouter-feedback');
+
+            bar.style.width = totalScore + '%';
+            scoreText.innerText = totalScore + ' / 100 XP';
+
+            if (count < 4) {
+                feedback.innerText = "Complète ton goûter en sélectionnant les autres catégories ! (" + count + "/4)";
+                feedback.className = "text-xs text-gray-300 italic text-center";
+            } else {
+                if (totalScore >= 90) {
+                    feedback.innerText = "🏆 Le Goûter de Champion ! Énergie durable, parfaite hydratation et muscles nourris !";
+                    feedback.className = "text-xs text-emerald-400 font-bold text-center animate-pulse";
+                } else if (totalScore >= 60) {
+                    feedback.innerText = "👍 Bon goûter ! Attention toutefois à l'excès de sucres ou d'additifs de temps à autre.";
+                    feedback.className = "text-xs text-yellow-400 font-bold text-center";
+                } else {
+                    feedback.innerText = "⚠️ Attention : Ce goûter risque de provoquer une hausse soudaine d'insuline et un gros coup de barre dans 45min !";
+                    feedback.className = "text-xs text-red-400 font-bold text-center";
+                }
+            }
+        }
+
+        // Challenge Evaluation Tracker
+        function updateChallengeScore() {
+            let score = 0;
+            const checkBoxes = ['chk-1', 'chk-2', 'chk-3', 'chk-4', 'chk-5'];
+            checkBoxes.forEach(id => {
+                if (document.getElementById(id).checked) {
+                    score++;
+                }
+            });
+
+            const percentage = (score / 5) * 100;
+            const bar = document.getElementById('chk-score-bar');
+            const level = document.getElementById('chk-score-level');
+            const desc = document.getElementById('chk-score-desc');
+
+            bar.style.width = percentage + '%';
+
+            if (score === 0) {
+                level.innerText = "Débutant 🌱";
+                desc.innerText = "Coche tes premières habitudes ci-dessus pour débloquer ton profil !";
+                level.className = "text-2xl font-black text-gray-800 mt-1 mb-2";
+            } else if (score <= 2) {
+                level.innerText = "Apprenti Athlète 🏃‍♂️";
+                desc.innerText = "C'est un bon début ! Essaie de corriger une autre habitude cette semaine.";
+                level.className = "text-2xl font-black text-amber-600 mt-1 mb-2";
+            } else if (score <= 4) {
+                level.innerText = "Pro de la Santé 🥑";
+                desc.innerText = "Génial ! Tu as d'excellentes habitudes pour ton âge, continue comme ça !";
+                level.className = "text-2xl font-black text-blue-600 mt-1 mb-2";
+            } else {
+                level.innerText = "Champion Sport-Santé ! 🏆";
+                desc.innerText = "Incroyable ! Tu as 100% de bonnes habitudes, ton corps te dira merci !";
+                level.className = "text-2xl font-black text-emerald-600 mt-1 mb-2";
+            }
+        }
+
+        // Customization System Actions
+        function toggleEditor(isOpen) {
+            const modal = document.getElementById('editor-modal');
+            if (isOpen) {
+                modal.classList.remove('hidden');
+                // Hydrate inputs with current settings
+                document.getElementById('editor-theme').value = currentSettings.theme;
+                document.getElementById('editor-title').value = currentSettings.title;
+                document.getElementById('editor-mini-title').value = currentSettings.miniTitle;
+                document.getElementById('editor-banner').value = currentSettings.banner;
+                document.getElementById('editor-intro-text').value = currentSettings.intro;
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function changeColorTheme(themeName) {
+            currentSettings.theme = themeName;
+            applyCSSThemeColors(themeName);
+        }
+
+        // Apply chosen palette parameters
+        function applyCSSThemeColors(themeName) {
+            const theme = colorThemes[themeName] || colorThemes.emerald;
+            document.documentElement.style.setProperty('--primary-color', theme.primary);
+            document.documentElement.style.setProperty('--primary-dark', theme.primaryDark);
+            document.documentElement.style.setProperty('--accent-color', theme.accent);
+            document.documentElement.style.setProperty('--accent-light', theme.accentLight);
+            document.documentElement.style.setProperty('--accent-hover', theme.accentHover);
+        }
+
+        // Handle Image uploads and translate to Base64
+        function handleImageUpload(inputElement, logoType) {
+            const file = inputElement.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Data = e.target.result;
+                if (logoType === 'main') {
+                    currentSettings.mainLogo = base64Data;
+                } else {
+                    currentSettings.partnerLogo = base64Data;
+                }
+                showToast("Image importée ! Cliquez sur Enregistrer pour l'appliquer.");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Clear loaded logo
+        function resetLogo(logoType) {
+            if (logoType === 'main') {
+                currentSettings.mainLogo = "";
+                document.getElementById('editor-logo-upload').value = "";
+            } else {
+                currentSettings.partnerLogo = "";
+                document.getElementById('editor-partner-logo-upload').value = "";
+            }
+            showToast("Logo supprimé.");
+        }
+
+        // Save & Render Layout updates
+        function saveAndApplySettings() {
+            // Update settings state from inputs
+            currentSettings.theme = document.getElementById('editor-theme').value;
+            currentSettings.title = document.getElementById('editor-title').value;
+            currentSettings.miniTitle = document.getElementById('editor-mini-title').value;
+            currentSettings.banner = document.getElementById('editor-banner').value;
+            currentSettings.intro = document.getElementById('editor-intro-text').value;
+
+            // Save to LocalStorage
+            localStorage.setItem('sport_sante_livret_settings', JSON.stringify(currentSettings));
+
+            // Render live modifications
+            applyCurrentSettings();
+            toggleEditor(false);
+            showToast("Modifications appliquées et enregistrées ! 🎨");
+        }
+
+        // Apply state to DOM elements
+        function applyCurrentSettings() {
+            // Colors
+            applyCSSThemeColors(currentSettings.theme);
+
+            // Texts
+            document.getElementById('tab-title').innerText = `${currentSettings.miniTitle} - ${currentSettings.title}`;
+            document.getElementById('text-banner').innerText = currentSettings.banner;
+            document.getElementById('header-mini-title').innerText = currentSettings.miniTitle;
+            document.getElementById('header-main-title').innerText = currentSettings.title;
+            document.getElementById('header-intro').innerText = currentSettings.intro;
+
+            // Render Main Logo
+            const defLogo = document.getElementById('default-logo');
+            const custLogo = document.getElementById('custom-logo');
+            if (currentSettings.mainLogo) {
+                defLogo.classList.add('hidden');
+                custLogo.src = currentSettings.mainLogo;
+                custLogo.classList.remove('hidden');
+            } else {
+                defLogo.classList.remove('hidden');
+                custLogo.classList.add('hidden');
+                custLogo.src = "";
+            }
+
+            // Render Partner Logo
+            const partnerWrapper = document.getElementById('partner-logo-wrapper');
+            const custPartnerLogo = document.getElementById('custom-partner-logo');
+            if (currentSettings.partnerLogo) {
+                custPartnerLogo.src = currentSettings.partnerLogo;
+                partnerWrapper.classList.remove('hidden');
+            } else {
+                partnerWrapper.classList.add('hidden');
+                custPartnerLogo.src = "";
+            }
+
+            // Update UI elements dependent on variables manually (SVG skeleton colors etc.)
+            document.getElementById('btn-posture').click(); // Refresh posture default
+        }
+
+        // Restore factory configurations
+        function resetToDefaults() {
+            if (confirm("Voulez-vous restaurer les paramètres d'origine du livret ?")) {
+                localStorage.removeItem('sport_sante_livret_settings');
+                currentSettings = {
+                    theme: "emerald",
+                    title: "Alimentation & Posture",
+                    miniTitle: "Mon Guide Sport-Santé",
+                    banner: "Une action de sensibilisation soutenue par le Département du Calvados",
+                    intro: "Salut ! Découvre comment bouger sans te faire mal, manger comme un véritable athlète et faire le plein de super-pouvoirs au collège ! 🚀",
+                    mainLogo: "",
+                    partnerLogo: ""
+                };
+                applyCurrentSettings();
+                toggleEditor(false);
+                showToast("Paramètres réinitialisés.");
+            }
+        }
+
+        // Trigger inside application toast
+        function showToast(message) {
+            const toast = document.getElementById('toast-notify');
+            document.getElementById('toast-text').innerText = message;
+            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-[-100px]', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initialize App and check Local Storage
+        window.onload = function () {
+            // URL Admin / Customizer Query Parameter validation
+            const urlParams = new URLSearchParams(window.location.search);
+            const isAdmin = urlParams.has('admin') || urlParams.has('edit');
+            const adminBtn = document.getElementById('customize-trigger-btn');
+            
+            if (isAdmin) {
+                adminBtn.classList.remove('hidden');
+            }
+
+            const saved = localStorage.getItem('sport_sante_livret_settings');
+            if (saved) {
+                try {
+                    currentSettings = JSON.parse(saved);
+                } catch(e) {
+                    console.error("Impossible de lire les sauvegardes locales");
+                }
+            }
+            applyCurrentSettings();
+            setPostureVisual(false); // bad posture initialized by default
+        }
+    </script>
+</body>
+</html>
